@@ -1,4 +1,4 @@
-service: lambda-authorizer
+service: hackathon-lambda-authorizer
 
 frameworkVersion: "3"
 
@@ -20,6 +20,14 @@ provider:
   environment: ${file(serverless/environment.yml)}
 
 functions:
+  - createUser:
+      handler: src/functions/create-user/post.handler
+      memorySize: 256
+      timeout: 18
+      events:
+        - httpApi:
+            path: /user
+            method: POST
   - generateUserToken:
       handler: src/functions/generate-token/post.handler
       memorySize: 256

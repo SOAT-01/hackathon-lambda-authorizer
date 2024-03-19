@@ -6,3 +6,5 @@ DATABASE_PASSWORD: "${ssm:database-password}"
 DATABASE_HOST: "${ssm:database-host}"
 DATABASE_PORT: "${ssm:database-port}"
 DATABASE_NAME: "${ssm:database-name}"
+
+PASSWORD_SALT: "${ssm:password-salt}"
