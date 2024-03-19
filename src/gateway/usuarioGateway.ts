@@ -9,7 +9,7 @@ export const getUsuarioByMatricula = async (matricula: string) => {
   return result[0];
 };
 
-export const createUser = async (
+export const createUsuario = async (
   email: string,
   nome: string,
   matricula: string,

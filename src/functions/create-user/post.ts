@@ -1,6 +1,6 @@
 import { APIGatewayEvent } from "aws-lambda";
 import ApiResponse from "../../utils/ApiResponse";
-import { createUser } from "@/gateway/usuarioGateway";
+import { createUsuario } from "@/gateway/usuarioGateway";
 import bcrypt from "bcryptjs";
 
 const generateUserToken = async (event: APIGatewayEvent) => {
@@ -15,7 +15,7 @@ const generateUserToken = async (event: APIGatewayEvent) => {
 
     const hash = await bcrypt.hash(senha, salt);
 
-    await createUser(email, nome, matricula, hash);
+    await createUsuario(email, nome, matricula, hash);
 
     return ApiResponse(200, {
       message: "User created successfully",
