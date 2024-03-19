@@ -1,6 +1,6 @@
 import { Callback, Context } from "aws-lambda";
 import jwt from "jsonwebtoken";
-import { getClienteByCpf } from "@/gateway/clienteGateway";
+import { getClienteByCpf } from "@/gateway/usuarioGateway";
 
 const validateUserToken = async (
   event: any,

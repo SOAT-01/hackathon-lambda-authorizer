@@ -1,7 +1,7 @@
 import { APIGatewayEvent } from "aws-lambda";
 import ApiResponse from "../../utils/ApiResponse";
 import jwt from "jsonwebtoken";
-import { getClienteByCpf } from "@/gateway/clienteGateway";
+import { getClienteByCpf } from "@/gateway/usuarioGateway";
 import { assertArgumentIsValidCpf } from "@/utils/assertionConcern";
 
 const generateUserToken = async (event: APIGatewayEvent) => {
