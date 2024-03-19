@@ -1,12 +1,12 @@
 import { createConnection } from "@/external/postgres/createConnection";
 
-export const getClienteByCpf = async (cpf: string) => {
+export const getUsuarioByMatricula = async (matricula: string) => {
   const connection = await createConnection();
   const result = await connection.query(
-    `SELECT * FROM clientes WHERE cpf = '${cpf}';`
+    `SELECT * FROM usuarios WHERE matricula = '${matricula}';`
   );
   connection.close();
-  return result;
+  return result[0];
 };
 
 export const createUser = async (
