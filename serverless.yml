@@ -1,0 +1,35 @@
+service: lambda-authorizer
+
+frameworkVersion: "3"
+
+custom:
+  esbuild:
+    bundle: true
+    minify: false
+    target: node18
+  enterprise:
+    collectLambdaLogs: false
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  memorySize: 512
+  timeout: 30
+  stage: prod
+  region: us-east-1
+  environment: ${file(serverless/environment.yml)}
+
+functions:
+  - generateUserToken:
+      handler: src/functions/generate-token/post.handler
+      memorySize: 256
+      timeout: 18
+      events:
+        - httpApi:
+            path: /generate-token
+            method: POST
+  - authorizer:
+      handler: src/functions/validate-token/validateUserToken.handler
+
+plugins:
+  - serverless-esbuild

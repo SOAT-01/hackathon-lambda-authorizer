@@ -1,0 +1,18 @@
+{
+  "include": ["./src/**/*"],
+  "exclude": ["node_modules", "./dist"],
+  "compilerOptions": {
+    "target": "ES2017",
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "outDir": "./dist",
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["*"]
+    }
+  }
+}
