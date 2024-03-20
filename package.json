@@ -1,4 +1,11 @@
 {
+  "name": "fiap-soat1-hackathon-lambda-authorizer",
+  "version": "1.0.0",
+  "description": "Projeto do curso da pós tech Fiap Arquitetura de Software",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --verbose false"
+  },
   "dependencies": {
     "@types/jest": "^29.5.12",
     "aws-lambda": "^1.0.7",
