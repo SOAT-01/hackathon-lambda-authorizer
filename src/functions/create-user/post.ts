@@ -3,7 +3,7 @@ import ApiResponse from "../../utils/ApiResponse";
 import { createUsuario } from "@/gateway/usuarioGateway";
 import bcrypt from "bcryptjs";
 
-const generateUserToken = async (event: APIGatewayEvent) => {
+const createUsuarioHandler = async (event: APIGatewayEvent) => {
   const salt = Number(process.env.PASSWORD_SALT);
   const { email, nome, matricula, senha } = JSON.parse(event.body || "{}");
   try {
@@ -26,4 +26,4 @@ const generateUserToken = async (event: APIGatewayEvent) => {
   }
 };
 
-module.exports.handler = generateUserToken;
+module.exports.handler = createUsuarioHandler;
