@@ -1,6 +1,6 @@
 import { APIGatewayEvent } from "aws-lambda";
 import ApiResponse from "../../utils/ApiResponse";
-import { createUsuario } from "@/gateway/usuarioGateway";
+import { createUsuario, getUsuarioByMatricula } from "@/gateway/usuarioGateway";
 import bcrypt from "bcryptjs";
 
 const createUsuarioHandler = async (event: APIGatewayEvent) => {
@@ -11,6 +11,12 @@ const createUsuarioHandler = async (event: APIGatewayEvent) => {
       return ApiResponse(400, {
         error: "Missing required fields",
       });
+    }
+
+    const user = await getUsuarioByMatricula(matricula);
+
+    if (user.length > 0) {
+      return ApiResponse(401, { error: "User already exists" });
     }
 
     const hash = await bcrypt.hash(senha, salt);
