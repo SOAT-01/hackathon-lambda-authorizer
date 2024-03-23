@@ -1,26 +1,31 @@
 import { APIGatewayEvent } from "aws-lambda";
 import ApiResponse from "../../utils/ApiResponse";
 import jwt from "jsonwebtoken";
-import { getClienteByCpf } from "@/gateway/clienteGateway";
-import { assertArgumentIsValidCpf } from "@/utils/assertionConcern";
+import { getUsuarioByMatricula } from "@/gateway/usuarioGateway";
+import bcrypt from "bcryptjs";
 
 const generateUserToken = async (event: APIGatewayEvent) => {
-  const { cpf } = JSON.parse(event.body || "{}");
+  const { matricula, senha } = JSON.parse(event.body || "{}");
   try {
-    if (cpf) {
-      const isAValidCPF = assertArgumentIsValidCpf(cpf);
-      if (!isAValidCPF) {
-        return ApiResponse(400, {
-          error: "Incorrect cpf format, ex: 123.456.789-00",
-        });
-      }
-      const results = await getClienteByCpf(cpf);
-      if (results[0].length === 0) {
-        return ApiResponse(404, { error: "User not found" });
-      }
+    if (!matricula || !senha) {
+      return ApiResponse(400, { error: "Missing required infos" });
     }
 
-    const token = jwt.sign({ cpf }, process.env.PRIVATE_KEY, {
+    const usuario = await getUsuarioByMatricula(matricula);
+
+    if (usuario.length === 0) {
+      return ApiResponse(401, { error: "Invalid user or password" });
+    }
+
+    const { senha: hash }: any = usuario[0];
+
+    const isPasswordCorrect = await bcrypt.compare(senha, hash);
+
+    if (!isPasswordCorrect) {
+      return ApiResponse(401, { error: "Invalid user or password" });
+    }
+
+    const token = jwt.sign({ matricula }, process.env.PRIVATE_KEY, {
       algorithm: "RS256",
       expiresIn: process.env.TOKEN_EXPIRATION_TIME,
     });

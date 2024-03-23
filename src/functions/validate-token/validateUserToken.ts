@@ -1,28 +1,30 @@
 import { Callback, Context } from "aws-lambda";
 import jwt from "jsonwebtoken";
-import { getClienteByCpf } from "@/gateway/clienteGateway";
+import { getUsuarioByMatricula } from "@/gateway/usuarioGateway";
 
 const validateUserToken = async (
   event: any,
   _: Context,
   callback: Callback
 ) => {
-  const [tokenType, token] = event?.headers?.authorization?.split(" ");
+  const [tokenType, token] = event?.headers?.authorization?.split(" ") || [
+    "",
+    "",
+  ];
 
-  if (tokenType !== "Bearer") {
+  if (tokenType !== "Bearer" || !token) {
     return callback(null, { isAuthorized: false });
   }
 
   try {
     const verifiedToken = jwt.verify(token, process.env.PUBLIC_KEY) as {
-      cpf?: string;
+      matricula?: string;
     };
 
-    if (!!verifiedToken?.cpf) {
-      const results = await getClienteByCpf(verifiedToken?.cpf);
-      if (results[0].length === 0) {
-        return callback(null, { isAuthorized: false });
-      }
+    const user = await getUsuarioByMatricula(verifiedToken.matricula);
+
+    if (user.length === 0) {
+      return callback(null, { isAuthorized: false });
     }
 
     return callback(null, { isAuthorized: true });
